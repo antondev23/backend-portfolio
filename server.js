@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 
 // Permite que React (en otro puerto) consuma esta API
 app.use(cors());
@@ -43,5 +43,5 @@ app.get("/api/experience", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor corriendo en https://backend-portfolio-6cw8.onrender.com`);
 });
