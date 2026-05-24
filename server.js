@@ -6,6 +6,18 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT;
 
+const corsOptions = {
+  origin: [
+    "https://portafolio-antonio-ortega.vercel.app",  // producción
+    "http://localhost:8000",                           // gatsby local
+    "http://localhost:9000",                           // gatsby build local
+  ],
+  methods: ["GET"],
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
 // Permite que React (en otro puerto) consuma esta API
 app.use(cors());
 app.use(express.json());
