@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Desarrollo Web",
+    "description": "Creacion de sitios web modernos y responsivos utilizando las ultimas tecnologias.",
+    "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80"
+  },
+  {
+    "id": 2,
+    "title": "Desarrollo de Software",
+    "description": "Desarrollo de aplicaciones personalizadas para satisfacer las necesidades especificas de tu negocio.",
+    "image": "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=900&q=80"
+  },
+  {
+    "id": 3,
+    "title": "Landing Page",
+    "description": "Diseno y desarrollo de paginas de aterrizaje efectivas para convertir visitantes en clientes.",
+    "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=80"
+  }
+]
