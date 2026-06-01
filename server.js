@@ -4,13 +4,13 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
   origin: [
     "https://portafolio-antonio-ortega.vercel.app",  // producción
-    "http://localhost:8000",                           // gatsby local
-    "http://localhost:9000",                           // gatsby build local
+    "http://localhost:8000",                        // gatsby local
+    "http://localhost:9000",                        // gatsby build local
   ],
   methods: ["GET"],
 };
@@ -18,42 +18,43 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Permite que React (en otro puerto) consuma esta API
-app.use(cors());
-app.use(express.json());
+const loadFile = (relativePath) => {
+  const filePath = path.join(__dirname, relativePath);
+  return fs.readFileSync(filePath, "utf-8");
+};
 
-// GET /api/services → lee el archivo y devuelve los datos
+let servicesData = [];
+let projectsData = [];
+let experienceMarkdown = "";
+
+try {
+  servicesData = JSON.parse(loadFile("data/services.json"));
+  projectsData = JSON.parse(loadFile("data/projects.json"));
+  experienceMarkdown = loadFile("data/experience.md");
+} catch (error) {
+  console.error("Error al cargar los datos al iniciar el servidor:", error);
+  process.exit(1);
+}
+
+const setCache = (res) => {
+  res.set("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
+};
+
 app.get("/api/services", (req, res) => {
-  const filePath = path.join(__dirname, "data", "services.json");
-  fs.readFile(filePath, "utf-8", (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "No se pudo leer los servicios" });
-    }
-    res.json(JSON.parse(data));
-  });
+  setCache(res);
+  res.json(servicesData);
 });
 
 app.get("/api/projects", (req, res) => {
-  const filePath = path.join(__dirname, "data", "projects.json");
-    fs.readFile(filePath, "utf-8", (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "No se pudo leer los proyectos" });
-    }
-    res.json(JSON.parse(data));
-    });
+  setCache(res);
+  res.json(projectsData);
 });
 
 app.get("/api/experience", (req, res) => {
-  const filePath = path.join(__dirname, "data", "experience.md");
-  fs.readFile(filePath, "utf-8", (err, data) => {
-    if (err) {
-      return res.status(500).json({ error: "No se pudo leer la experiencia" });
-    }
-
-    res.type("text/markdown").send(data);
-  });
+  setCache(res);
+  res.type("text/markdown").send(experienceMarkdown);
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en https://backend-portfolio-6cw8.onrender.com`);
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
