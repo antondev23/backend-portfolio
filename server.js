@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
   origin: [
-    "https://portafolio-antonio-ortega.vercel.app",  // producción
+    process.env.APIFRONTEND_URL,  // producción
     "http://localhost:8000",                        // gatsby local
     "http://localhost:9000",                        // gatsby build local
   ],
