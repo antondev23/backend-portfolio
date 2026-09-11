@@ -5,8 +5,7 @@
 **2025 - Presente**
 
 - Construccion de aplicaciones practicas para mejorar mis habilidades en frontend y backend.
-- Organizacion de informacion en archivos JSON y Markdown para renderizar contenido dinamico.
-- Uso de animaciones con Framer Motion para mejorar la experiencia visual.
+- Creación de contenido en redes sociales de mis proyectos
 
 ## Desarrollador Web
 
@@ -14,7 +13,7 @@
 
 - Desarrollo de interfaces web modernas con React, Gatsby y Tailwind CSS.
 - Creacion de componentes reutilizables para secciones como proyectos, servicios y portfolio personal.
-- Consumo de APIs propias con Express para mostrar datos dinamicos en el frontend.
+- Consumo de APIs propias con gatsby y cms drupal para mostrar datos dinamicos en el frontend.
 
 
 ## Tecnico en sistemas

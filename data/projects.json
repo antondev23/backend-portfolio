@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "date": "2025",
-    "title": "Dreamconnect",
-    "description": "una red social diseñada para promover la inclusión y visibilidad de las personas con algún grado de discapacidad, permitiéndoles compartir sus habilidades, darse a conocer y conectar con individuos, empresas u observadores interesados ​en contratar sus servicios o dar apoyo a sus sueños.",
-    "image": "https://i.postimg.cc/DysRzy5b/img1.webp"
+    "date": "2026",
+    "title": "PresupuestoApp",
+    "description": "Calcula el presupuesto de tu proyecto en segundos. Esta aplicación web te permite estimar los costos de desarrollo de tu proyecto de manera rápida y sencilla. Solo ingresa los detalles de tu proyecto y obtén un presupuesto aproximado al instante, TODO IMPULSADO POR IA.",
+    "image": "../img/presupuestoApp.png"
   }
 ]
