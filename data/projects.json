@@ -4,7 +4,7 @@
     "date": "2026",
     "title": "PresupuestoApp",
     "description": "Calcula el presupuesto de tu proyecto en segundos. Esta aplicación web te permite estimar los costos de desarrollo de tu proyecto de manera rápida y sencilla. Solo ingresa los detalles de tu proyecto y obtén un presupuesto aproximado al instante, TODO IMPULSADO POR IA.",
-    "image": "/img/presupuestoApp.png",
+    "image": "presupuestoApp.png",
     "link": "https://presupuesto-free.vercel.app/"
   }
 ]
