@@ -17,6 +17,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use("/img", express.static(path.join(__dirname, "img")));
 
 const loadFile = (relativePath) => {
   const filePath = path.join(__dirname, relativePath);
