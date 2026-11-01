@@ -3,27 +3,35 @@ const cors = require("cors");
 const fs = require("fs");
 const path = require("path");
 
+const envFile = path.join(__dirname, ".env");
+if (fs.existsSync(envFile)) {
+  fs.readFileSync(envFile, "utf-8").split(/\r?\n/).forEach((line) => {
+    const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/i);
+    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].replace(/^['"]|['"]$/g, "");
+  });
+}
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
+const defaultOrigins = ["http://localhost:8000", "http://127.0.0.1:8000"];
+const configuredOrigins = (process.env.FRONTEND_ORIGINS || process.env.APIFRONTEND_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const allowedOrigins = new Set([...defaultOrigins, ...configuredOrigins]);
 
-const corsOptions = {
-  origin: [
-    process.env.APIFRONTEND_URL,
-    "http://localhost:8000",
-    "http://localhost:9000",
-  ],
+app.use(cors({
+  origin(origin, callback) {
+    // Permite health checks, curl y tráfico configurado explícitamente.
+    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    return callback(new Error(`Origen no permitido por CORS: ${origin}`));
+  },
   methods: ["GET"],
-};
-
-app.use(cors(corsOptions));
+}));
 app.use(express.json());
 app.use("/img", express.static(path.join(__dirname, "img")));
 
-const loadFile = (relativePath) => {
-  const filePath = path.join(__dirname, relativePath);
-  return fs.readFileSync(filePath, "utf-8");
-};
-
+const loadFile = (relativePath) => fs.readFileSync(path.join(__dirname, relativePath), "utf-8");
 let servicesData = [];
 let projectsData = [];
 let experienceMarkdown = "";
@@ -37,25 +45,19 @@ try {
   process.exit(1);
 }
 
-const setCache = (res) => {
-  res.set("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
-};
+const setCache = (res) => res.set("Cache-Control", "public, max-age=60, stale-while-revalidate=30");
+app.get("/health", (req, res) => res.json({ status: "ok" }));
+app.get("/api/services", (req, res) => { setCache(res); res.json(servicesData); });
+app.get("/api/projects", (req, res) => { setCache(res); res.json(projectsData); });
+app.get("/api/experience", (req, res) => { setCache(res); res.type("text/markdown").send(experienceMarkdown); });
 
-app.get("/api/services", (req, res) => {
-  setCache(res);
-  res.json(servicesData);
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`API local disponible en http://localhost:${PORT}`);
+  console.log("Para el VPS, accede mediante el dominio configurado en tu proxy inverso.");
 });
 
-app.get("/api/projects", (req, res) => {
-  setCache(res);
-  res.json(projectsData);
+server.on("error", (error) => {
+  console.error("No se pudo iniciar la API:", error.message);
+  process.exit(1);
 });
-
-app.get("/api/experience", (req, res) => {
-  setCache(res);
-  res.type("text/markdown").send(experienceMarkdown);
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+server.on("close", () => console.log("API detenida."));
